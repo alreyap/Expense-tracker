@@ -1,38 +1,120 @@
-.App {
+
+.main {
+  
+  background-color: #bbb0e2;
+  max-width: 100%;
+  border: 3px solid black;
+  padding-bottom: 10px;
+  font-size: larger;
+  color: rgb(63, 6, 63);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin-bottom: 10px; 
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 3px solid black;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+  background-color: rgb(247, 151, 199);
+}
+
+th {
+  background-color: palevioletred;
+  color: black;
+}
+
+
+.summary-box {
+  margin-top: 20px;
+}
+
+.summary-box h2 {
+  margin-bottom: 10px;
+  padding-top: 10px;
+}
+
+.bal {
+  margin-top: 10px;
+  padding: 30px;
   text-align: center;
+  background-color: rgb(238, 194, 234);
+  border: 2px solid rgb(203, 33, 107);
+  font-weight: bold;
+  color: rgb(3, 63, 3);
+  font-size: large;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+button {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 5px 25px;
+  background-color: rgb(224, 218, 218);
+  font-size: medium;
+  font-weight: bold;
+  margin-bottom: 10px; 
+  margin-right: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input, textarea, select {
+  background-color: rgb(224, 218, 218);
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: medium;
+  padding: 8px;
+  margin-bottom: 10px; 
+  width: 300px; 
+  box-sizing: border-box; 
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.form-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-start;
 }
 
-.App-link {
-  color: #61dafb;
+.filter {
+  text-align: right;
+  color: rgb(63, 6, 63);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin-bottom: 10px; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input, select {
+  padding: 8px;
+}
+
+
+textarea {
+  height: 40px; 
+  width: 490px; 
+  
+}
+
+.main p, .main label {
+  padding-left: 30%;
+}
+
+#addbtn {
+  display: block;
+  margin: 0 auto;
+  padding: 13px 40px;
+}
+
+h1, h3, h2 {
+  text-align: center;
+}
+#am{
+  width: 340px;
+}
+select{
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
