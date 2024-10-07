@@ -1,41 +1,14 @@
 import React, { useState } from 'react';
+import AddEntry from './AddEntry';
+import EditEntry from './EditEntry';
 
 export const Basic = () => {
   const [income, setIncome] = useState(0);
-  const [category, setCategory] = useState('Grocery');
-  const [amount, setAmount] = useState(0);
-  const [description, setDescription] = useState('');
   const [entries, setEntries] = useState([]);
   const [sum, setSum] = useState(0);
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(null);
-
-  const handleAdd = () => {
-    if (income <= 0) {
-      alert('Income must be set ');
-      return;
-    }
-    if (amount <= 0) {
-      alert('Amount must be greater than 0.');
-      return;
-    }
-    const time = new Date().toLocaleString();
-    const newEntry = { category, description, amount: parseFloat(amount), time };
-    setEntries([...entries, newEntry]);
-    const newSum = sum + parseFloat(amount);
-    const newIncome = income - parseFloat(amount);
-    setSum(newSum);
-    setCategory('Grocery');
-    setAmount(0);
-    setDescription('');
-    setIncome(newIncome);
-
-    if (newIncome <= 0) {
-      alert('Balance is zero or less!');
-      setIncome(income);
-    }
-  };
+  const [currentId, setCurrentId] = useState(null);
 
   const filterByDate = () => {
     const sortedEntries = [...entries].sort((a, b) => new Date(a.time) - new Date(b.time));
@@ -47,59 +20,48 @@ export const Basic = () => {
     setFilteredEntries(sortedEntries);
   };
 
-  const del = (index) => {
-    const entryToDelete = entries[index];
-    const arr = [...entries.slice(0, index), ...entries.slice(index + 1)];
+  const del = (id) => {
+    const entryToDelete = entries.find(entry => entry.id === id);
+    const arr = entries.filter(entry => entry.id !== id);
     setEntries(arr);
     setIncome(income + entryToDelete.amount); 
     setSum(sum - entryToDelete.amount); 
   };
 
-  const handleEdit = (index) => {
-    const entry = entries[index];
-    setCategory(entry.category);
-    setAmount(entry.amount);
-    setDescription(entry.description);
+  const handleEdit = (id) => {
+    setCurrentId(id);
     setIsEditing(true);
-    setCurrentIndex(index);
-  };
-
-  const saveEdit = () => {
-    const updatedEntries = [...entries];
-    const oldEntry = updatedEntries[currentIndex];
-    const newEntry = { ...oldEntry, category, amount: parseFloat(amount), description };
-    updatedEntries[currentIndex] = newEntry;
-
-    const newSum = sum - oldEntry.amount + newEntry.amount;
-    const newIncome = income + oldEntry.amount - newEntry.amount;
-
-    setEntries(updatedEntries);
-    setSum(newSum);
-    setIncome(newIncome);
-    setCategory('Grocery');
-    setAmount(0);
-    setDescription('');
-    setIsEditing(false);
-    setCurrentIndex(null);
   };
 
   return (
     <>
       <div className='main'>
         <h1>Daily Expense Tracker</h1><br/>
-        <p>Enter your income: <input type='number' onChange={(e) => setIncome(parseFloat(e.target.value))} /></p>
+        <p>Enter your income: <input type='number' id='in' onChange={(e) => setIncome(parseFloat(e.target.value))} /></p>
         
-        <h3><u>Expenses</u></h3>
-        <label htmlFor="cat">Choose a category:</label>
-        <select name="cat" id="cat" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="Grocery">Grocery</option>
-          <option value="Clothing">Clothing</option>
-          <option value="Transport">Transport</option>
-          <option value="Entertainment">Entertainment</option>
-        </select>
-        <p>Amount spent: <input id='am' type='number' value={amount} onChange={(e) => setAmount(parseFloat(e.target.value))} /></p>
-        <p>Description: <br/><textarea value={description} onChange={(e) => setDescription(e.target.value)} /></p>
-        <button onClick={isEditing ? saveEdit : handleAdd} id='addbtn'>{isEditing ? 'Save' : 'Add'}</button>
+        {isEditing ? (
+          <EditEntry
+            entries={entries}
+            setEntries={setEntries}
+            sum={sum}
+            setSum={setSum}
+            income={income}
+            setIncome={setIncome}
+            currentId={currentId}
+            setIsEditing={setIsEditing}
+            setFilteredEntries={setFilteredEntries}
+          />
+        ) : (
+          <AddEntry
+            income={income}
+            setIncome={setIncome}
+            entries={entries}
+            setEntries={setEntries}
+            sum={sum}
+            setSum={setSum}
+            setFilteredEntries={setFilteredEntries}
+          />
+        )}
       </div>
       {entries.length > 0 && (
         <div className='summary-box'>
@@ -118,15 +80,15 @@ export const Basic = () => {
               </tr>
             </thead>
             <tbody>
-              {(filteredEntries.length > 0 ? filteredEntries : entries).map((entry, index) => (
-                <tr key={index}>
+              {(filteredEntries.length > 0 ? filteredEntries : entries).map((entry) => (
+                <tr key={entry.id}>
                   <td>{entry.category}</td>
                   <td>{entry.description}</td>
                   <td>{entry.amount}</td>
                   <td>{entry.time}</td>
                   <td>
-                    <button onClick={() => handleEdit(index)}>Edit</button>
-                    <button onClick={() => del(index)}>Delete</button>
+                    <button onClick={() => handleEdit(entry.id)}>Edit</button>
+                    <button onClick={() => del(entry.id)}>Delete</button>
                   </td>
                 </tr>
               ))}
